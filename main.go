@@ -12,15 +12,18 @@ func main() {
 
 	http.Handle("/", http.FileServer(http.Dir("./web")))
 
-	//err := db.Init("scheduler.db")
-	//if err != nil {
-	//	log.Fatalf("Ошибка создания БД: %v", err)
-	//}
+	var err_db error
+	var err_server error
+
+	err_db = db.Init("scheduler.db")
+	if err_db != nil {
+		log.Fatalf("Ошибка создания БД: %v", err_db)
+	}
 	db.Init("scheduler.db")
 	defer db.Close()
 
-	err := server.Run()
-	if err != nil {
-		log.Println("server run fail", err)
+	err_server = server.Run()
+	if err_server != nil {
+		log.Println("server run fail", err_server)
 	}
 }

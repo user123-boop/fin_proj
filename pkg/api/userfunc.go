@@ -17,35 +17,27 @@ func afterNow(date, now time.Time) bool {
 
 func writeJSON(w http.ResponseWriter, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
-	return json.NewEncoder(w).Encode(data)
-}
-
-/*func writeJSON(w http.ResponseWriter, data any) {
-	resp, err := json.Marshal(data)
+	err := json.NewEncoder(w).Encode(data)
 	if err != nil {
-		http.Error(w, "Ошибка маршализации JSON", http.StatusInternalServerError)
-		return
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	//json.NewEncoder(w).Encode(data)
-	w.Write(resp)
-}*/
+	return err
+}
 
 func writeError(w http.ResponseWriter, error string, code int) {
 	w.WriteHeader(code)
 	writeJSON(w, map[string]string{"error": error})
-	//w.WriteHeader(code)
 }
 
 func checkDate(task *db.Task) error {
 	now := time.Now()
-	today := now.Format("20060102")
+	today := now.Format(DateFormat)
 
 	if task.Date == "" {
 		task.Date = today
 	}
 
-	t, err := time.Parse("20060102", task.Date)
+	t, err := time.Parse(DateFormat, task.Date)
 	if err != nil {
 		return fmt.Errorf("data is invalid")
 	}

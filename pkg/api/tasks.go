@@ -2,7 +2,6 @@ package api
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/user123-boop/fin_proj/pkg/db"
 )
@@ -14,11 +13,8 @@ type TasksResp struct {
 }
 
 func tasksHandler(w http.ResponseWriter, r *http.Request) {
-	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
-	if err != nil {
-		limit = limitConst
-	}
-	tasks, err := db.Tasks(limit)
+
+	tasks, err := db.Tasks(limitConst)
 	if err != nil {
 		writeError(w, "Ошибка при получении задач", http.StatusInternalServerError)
 		return

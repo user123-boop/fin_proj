@@ -8,9 +8,9 @@ import (
 )
 
 func doneTaskHandler(w http.ResponseWriter, r *http.Request) {
-	//if r.Method == http.MethodPost {
-	//	writeError(w, "wrong method", http.StatusMethodNotAllowed)
-	//}
+	if r.Method == http.MethodPost {
+		writeError(w, "wrong method", http.StatusMethodNotAllowed)
+	}
 	id := r.URL.Query().Get("id")
 	if id == "" {
 		writeError(w, "id is empty", http.StatusBadRequest)

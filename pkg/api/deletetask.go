@@ -8,9 +8,9 @@ import (
 )
 
 func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
-	//if r.Method == http.MethodDelete {
-	//	writeError(w, "wrong method", http.StatusMethodNotAllowed)
-	//}
+	if r.Method == http.MethodDelete {
+		writeError(w, "wrong method", http.StatusMethodNotAllowed)
+	}
 	id := r.URL.Query().Get("id")
 	if id == "" {
 		writeError(w, "Не указан идентификатор", http.StatusBadRequest)
